@@ -1,3 +1,77 @@
-#root {
-  color: red;
+body {
+  background-color: #7b7780; /* lilac */
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
+
+#root {
+  color: #111;
+  padding: 40px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.episode-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Always 3 on desktop */
+  gap: 32px;
+  justify-items: center;
+  padding: 0 20px;
+}
+
+.episode-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(80, 0, 80, 0.08);
+  padding: 24px 16px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.episode-card h2 {
+  background: #7b6b93;
+  color: #333;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin: 0 0 16px 0;
+  text-align: center;
+  font-size: 1.2rem;
+  width: 90%;
+  box-sizing: border-box;
+}
+
+.episode-card img {
+  width: 210px;
+  height: 295px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid #d1b3ff;
+  background: #f5f0fa;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 6px rgba(80, 0, 80, 0.07);
+}
+
+.episode-card div {
+  margin-bottom: 10px;
+  color: #444;
+  font-size: 0.98rem;
+}
+
+.episode-card a {
+  color: #311f68;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 8px;
+}
+
+.episode-card a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1000px) {
+  .episode-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 on tablets */
+  }
+}
+
