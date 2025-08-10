@@ -38,3 +38,18 @@ searchInput.addEventListener("input", function () {
    displayEpisodes(filteredEpisodes);
   searchCount.textContent = `Showing ${filteredEpisodes.length} / ${allEpisodes.length} episodes`;
 });
+
+// === Episode Selector
+const episodeSelect = document.getElementById("episode-select");
+
+function populateEpisodeSelect(episodes) {
+  episodeSelect.innerHTML = ""; // Clear previous options
+  episodes.forEach((episode) => {
+    const option = document.createElement("option");
+    option.value = episode.id;
+    option.textContent = `S${String(episode.season).padStart(2, "0")}E${String(
+      episode.number
+    ).padStart(2, "0")} - ${episode.name}`;
+    episodeSelect.appendChild(option);
+  });
+}
