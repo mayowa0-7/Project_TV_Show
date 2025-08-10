@@ -22,7 +22,11 @@ window.onload = function() {
       makePageForEpisodes(getAllEpisodes());
     }
   };
-
+function formatEpisodeCode(season, number) {
+  const seasonStr = season.toString().padStart(2, '0');
+  const numberStr = number.toString().padStart(2, '0');
+  return `S${seasonStr}E${numberStr}`;
+}
   // === Live Search ===
 const searchInput = document.getElementById("search-input");
 const searchCount = document.getElementById("search-count");
