@@ -22,3 +22,19 @@ window.onload = function() {
       makePageForEpisodes(getAllEpisodes());
     }
   };
+
+  // === Live Search ===
+const searchInput = document.getElementById("search-input");
+const searchCount = document.getElementById("search-count");
+
+searchInput.addEventListener("input", function () {
+  const searchTerm = searchInput.value.toLowerCase();
+  const filteredEpisodes = allEpisodes.filter((episode) => {
+    return (
+      episode.name.toLowerCase().includes(searchTerm) ||
+      episode.summary.toLowerCase().includes(searchTerm)
+    );
+  });
+   displayEpisodes(filteredEpisodes);
+  searchCount.textContent = `Showing ${filteredEpisodes.length} / ${allEpisodes.length} episodes`;
+});
