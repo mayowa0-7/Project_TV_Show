@@ -1,3 +1,14 @@
+ let allEpisodes = []; // Global so it can be used across functions.
+
+function setup() {
+  allEpisodes = getAllEpisodes();
+  makePageForEpisodes(allEpisodes);
+  populateEpisodeSelect(allEpisodes);
+}
+
+function makePageForEpisodes(episodeList) {
+  displayEpisodes(episodeList);
+}
  function displayEpisodes(episodes) {
   const rootElem = document.getElementById("root");
   rootElem.innerHTML = ""; // Clear previous content
