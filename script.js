@@ -35,6 +35,7 @@ function makePageForEpisodes(episodeList) {
     episodeCard.append(title, image, summary, link);
     rootElem.appendChild(episodeCard);
   });
+
 }
 function formatEpisodeCode(season, number) {
   const seasonStr = season.toString().padStart(2, '0');
@@ -89,4 +90,8 @@ episodeSelect.addEventListener("change", function () {
   }
 });
 
-window.onload = setup;
+window.onload = function() {
+    if (typeof getAllEpisodes === "function") {
+      makePageForEpisodes(getAllEpisodes());
+    }
+  };
