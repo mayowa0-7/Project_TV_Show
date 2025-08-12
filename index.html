@@ -10,8 +10,20 @@
 </head>
 
 <body>
+  <header>
+    <input type="text" id="search-input" placeholder="Search episodes...">
+<p id="search-count"></p>
+<select id="episode-select">
+  <option value="all">Show all episodes</option>
+</select>
+  </header>
   <div id="root"></div>
-
+  <footer>
+    <p>Episode data from 
+  <a href="https://www.tvmaze.com/api" target="_blank" rel="noopener noreferrer">
+    TVMaze.com</a>
+  </p>
+    </footer>
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
 

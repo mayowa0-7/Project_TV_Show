@@ -5,10 +5,13 @@ body {
 }
 
 #root {
-  color: #111;
-  padding: 40px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: auto;
+  color: #111;
 }
 
 .episode-grid {
@@ -42,11 +45,12 @@ body {
 }
 
 .episode-card img {
-  width: 210px;
-  height: 295px;
+  width:  100%;
+  height: auto;
   object-fit: cover;
   border-radius: 10px;
-  border: 2px solid #d1b3ff;
+  border: 2px solid #874db8;
+
   background: #f5f0fa;
   margin-bottom: 12px;
   box-shadow: 0 1px 6px rgba(80, 0, 80, 0.07);
