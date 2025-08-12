@@ -13,6 +13,10 @@ body {
   margin: auto;
   color: #111;
 }
+#loading {
+  margin: 20px;
+  color: #333;
+}
 
 .episode-grid {
   display: grid;
@@ -42,6 +46,13 @@ body {
   font-size: 1.2rem;
   width: 90%;
   box-sizing: border-box;
+}
+
+.no-results {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #cc0000;
+  margin-top: 30px;
 }
 
 .episode-card img {
