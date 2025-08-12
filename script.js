@@ -1,9 +1,45 @@
 let allEpisodes = []; // Global so it can be used across functions.
 
 function setup() {
-  allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
-  populateEpisodeSelect(allEpisodes);
+showLoadingMessage();
+  const root = document.getElementById("root");
+  const loadingElement = document.createElement("div");
+  loadingElement.id = "loading";
+  loadingElement.textContent = "Loading episodes...";
+  loadingElement.style.textAlign = "center";
+  loadingElement.style.fontSize = "1.2em";
+  root.appendChild(loadingElement);
+}
+function hideLoadingMessage() {
+  const loadingElement = document.getElementById("loading");
+  if (loadingElement) loadingElement.remove();
+}
+  fetch("https://api.tvmaze.com/shows/82/episodes")
+    .then(response => {
+      if (!response.ok) throw new Error("Network error");
+      return response.json();
+    })
+    .then(data => {
+      allEpisodes = data;
+      hideLoadingMessage();
+      makePageForEpisodes(allEpisodes);
+      populateEpisodeSelect(allEpisodes);
+    })
+
+    .catch(error => {
+      hideLoadingMessage(); // Optional: clear spinner before showing error
+      showErrorMessage("page not loading, please kindly check your connection and try again.");
+    });
+
+function showErrorMessage(msg) {
+  const root = document.getElementById("root");
+  root.innerHTML = `
+    <div style="color: red; padding: 1em; background: #ffe6e6; border: 1px solid red; border-radius: 5px;">
+      <strong>Error:</strong> ${msg}
+      <br>
+      <button onclick="setup()" style="margin-top: 0.5em;">Retry</button>
+    </div>
+  `;
 }
 
 function makePageForEpisodes(episodeList) {
@@ -29,10 +65,12 @@ function displayEpisodes(episodes) {
     title.textContent = `${episode.name} — ${formatEpisodeCode(episode.season, episode.number)}`;
 
     const image = document.createElement("img");
-    image.src = episode.image.medium;
+    image.src = episode.image.medium || "";
+    image.alt = episode.name || "Episode image";
 
     const summary = document.createElement("div");
-    summary.innerHTML = episode.summary;
+    summary.innerHTML = episode.summary || "No summary available.";
+
 
     const link = document.createElement("a");
     link.href = episode.url;
