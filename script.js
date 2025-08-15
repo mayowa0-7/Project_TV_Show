@@ -96,6 +96,31 @@ function fetchShowsOnce() {
   return showsListPromise;
 }
 
+function fetchEpisodesOnce(showId) {
+  if (episodesCache.has(showId)) {
+    return Promise.resolve(episodesCache.get(showId));
+  }
+  if (inFlightEpisodeFetch.has(showId)) {
+    return inFlightEpisodeFetch.get(showId);
+  }
+  const p = fetch(`https://api.tvmaze.com/shows/${showId}/episodes`)
+    .then((res) => {
+      if (!res.ok) throw new Error(`Episodes HTTP ${res.status}`);
+      return res.json();
+    })
+    .then((eps) => {
+      episodesCache.set(showId, eps);
+      inFlightEpisodeFetch.delete(showId);
+      return eps;
+    })
+    .catch((err) => {
+      inFlightEpisodeFetch.delete(showId);
+      throw err;
+    });
+  inFlightEpisodeFetch.set(showId, p);
+  return p;
+}
+
   function makePageForEpisodes(episodeList) {
   displayEpisodes(episodeList);
 }
