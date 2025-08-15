@@ -165,10 +165,16 @@ async function loadEpisodesForShow(showId) {
     rootElem.appendChild(card);
   });
 }
-function formatEpisodeCode(season, number) {
-  const seasonStr = season.toString().padStart(2, '0');
-  const numberStr = number.toString().padStart(2, '0');
-  return `S${seasonStr}E${numberStr}`;
+function populateEpisodeSelect(episodes) {
+  episodeSelect.innerHTML = '<option value="all">Show all episodes</option>';
+  episodes.forEach((episode) => {
+    const opt = document.createElement("option");
+    opt.value = episode.id;
+    opt.textContent = `S${String(episode.season).padStart(2, "0")}E${String(
+      episode.number
+    ).padStart(2, "0")} - ${episode.name}`;
+    episodeSelect.appendChild(opt);
+  });
 }
   // === Live Search ===
 
