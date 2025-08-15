@@ -14,11 +14,29 @@ const inFlightEpisodeFetch = new Map();          // showId -> Promise
 
 // ===== Setup =====
 window.onload = setup;
+
 function setup() {
-  allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
-  populateEpisodeSelect(allEpisodes);
-}
+  showLoadingMessage("Loading shows…");
+  fetchShowsOnce()
+    .then((shows) => {
+      // Sort shows alphabetically, case-insensitive
+      shows.sort((a, b) =>
+        a.name.localeCompare(b.name, undefined, { sensitivity: "accent" })
+      );
+      populateShowSelect(shows);
+
+      // Pick a default show (keep your old default if you want)
+      // For example, try to default to "Game of Thrones" (id 82) if present
+      const got = shows.find((s) => s.id === 82);
+      selectedShowId = got ? got.id : shows[0]?.id;
+
+      // Load episodes for the default show
+      return loadEpisodesForShow(selectedShowId);
+    })
+    .catch((err) => {
+      showErrorMessage("Failed to load shows. Please try again later.");
+      console.error(err);
+    });
 
 function makePageForEpisodes(episodeList) {
   displayEpisodes(episodeList);
