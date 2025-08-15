@@ -1,4 +1,12 @@
- let allEpisodes = []; // Global so it can be used across functions.
+ // ===== Global State & Elements =====
+ let allEpisodes = []; //current show's episodes
+let selectedShowId = null;            // current show id
+
+const rootElem      = document.getElementById("root");
+const showSelect    = document.getElementById("show-select");
+const episodeSelect = document.getElementById("episode-select");
+const searchInput   = document.getElementById("search-input");
+const searchCount   = document.getElementById("search-count");
 
 function setup() {
   allEpisodes = getAllEpisodes();
@@ -42,8 +50,6 @@ function formatEpisodeCode(season, number) {
   return `S${seasonStr}E${numberStr}`;
 }
   // === Live Search ===
-const searchInput = document.getElementById("search-input");
-const searchCount = document.getElementById("search-count");
 
 searchInput.addEventListener("input", function () {
   const searchTerm = searchInput.value.toLowerCase();
@@ -58,8 +64,6 @@ searchInput.addEventListener("input", function () {
 });
 
 // === Episode Selector
-const episodeSelect = document.getElementById("episode-select");
-
 function populateEpisodeSelect(episodes) {
   episodeSelect.innerHTML = ""; // Clear previous options
   episodes.forEach((episode) => {
