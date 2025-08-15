@@ -142,27 +142,27 @@ async function loadEpisodesForShow(showId) {
     
     const title = document.createElement("h3");
     title.textContent = `${episode.name} — ${formatEpisodeCode(episode.season, episode.number)}`;
-    card.appendChild(title);
+    episodeCard.appendChild(title);
 
  if (episode.image?.medium) {
       const img = document.createElement("img");
       img.src = episode.image.medium;
       img.alt = episode.name;
-      card.appendChild(img);
+      episodeCard.appendChild(img);
     }
      const summary = document.createElement("div");
     summary.innerHTML = episode.summary || "No summary available.";
-    card.appendChild(summary);
+    episodeCard.appendChild(summary);
 
   if (episode.url) {
     const link = document.createElement("a");
     link.href = episode.url;
     link.textContent = "View on TVMaze";
     link.target = "_blank";
- card.appendChild(link);
+ episodeCard.appendChild(link);
     }
 
-    rootElem.appendChild(card);
+    rootElem.appendChild(episodeCard);
   });
 }
 function populateEpisodeSelect(episodes) {
@@ -174,32 +174,6 @@ function populateEpisodeSelect(episodes) {
       episode.number
     ).padStart(2, "0")} - ${episode.name}`;
     episodeSelect.appendChild(opt);
-  });
-}
-  // === Live Search ===
-
-searchInput.addEventListener("input", function () {
-  const searchTerm = searchInput.value.toLowerCase();
-  const filteredEpisodes = allEpisodes.filter((episode) => {
-    return (
-      episode.name.toLowerCase().includes(searchTerm) ||
-      episode.summary.toLowerCase().includes(searchTerm)
-    );
-  });
-   displayEpisodes(filteredEpisodes);
-  searchCount.textContent = `Showing ${filteredEpisodes.length} / ${allEpisodes.length} episodes`;
-});
-
-// === Episode Selector
-function populateEpisodeSelect(episodes) {
-  episodeSelect.innerHTML = ""; // Clear previous options
-  episodes.forEach((episode) => {
-    const option = document.createElement("option");
-    option.value = episode.id;
-    option.textContent = `S${String(episode.season).padStart(2, "0")}E${String(
-      episode.number
-    ).padStart(2, "0")} - ${episode.name}`;
-    episodeSelect.appendChild(option);
   });
 }
 
@@ -245,4 +219,3 @@ function showErrorMessage(msg) {
 function hideMessage() {
   rootElem.innerHTML = "";
 }
-window.onload = setup;
