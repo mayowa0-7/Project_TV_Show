@@ -133,11 +133,7 @@ async function loadEpisodesForShow(showId) {
   updateSearchCount(filtered.length, allEpisodes.length);
 }
 
-  function makePageForEpisodes(episodeList) {
-  displayEpisodes(episodeList);
-}
  function displayEpisodes(episodes) {
-  const rootElem = document.getElementById("root");
   rootElem.innerHTML = ""; // Clear previous content
 
   episodes.forEach((episode) => {
@@ -146,21 +142,27 @@ async function loadEpisodesForShow(showId) {
     
     const title = document.createElement("h3");
     title.textContent = `${episode.name} — ${formatEpisodeCode(episode.season, episode.number)}`;
+    card.appendChild(title);
 
-    const image = document.createElement("img");
-    image.src = episode.image.medium;
+ if (episode.image?.medium) {
+      const img = document.createElement("img");
+      img.src = episode.image.medium;
+      img.alt = episode.name;
+      card.appendChild(img);
+    }
+     const summary = document.createElement("div");
+    summary.innerHTML = episode.summary || "No summary available.";
+    card.appendChild(summary);
 
-    const summary = document.createElement("div");
-    summary.innerHTML = episode.summary;
-
+  if (episode.url) {
     const link = document.createElement("a");
     link.href = episode.url;
     link.textContent = "View on TVMaze";
     link.target = "_blank";
+ card.appendChild(link);
+    }
 
-    
-    episodeCard.append(title, image, summary, link);
-    rootElem.appendChild(episodeCard);
+    rootElem.appendChild(card);
   });
 }
 function formatEpisodeCode(season, number) {
