@@ -203,21 +203,21 @@ function populateEpisodeSelect(episodes) {
   });
 }
 
-episodeSelect.addEventListener("change", function () {
-  const selectedId = episodeSelect.value;
+function populateShowSelect(shows) {
+  // Clear and fill
+  showSelect.innerHTML = "";
+  shows.forEach((show) => {
+    const opt = document.createElement("option");
+    opt.value = show.id;
+    opt.textContent = show.name;
+    showSelect.appendChild(opt);
+  });
 
-  if (selectedId === "all") {
-    displayEpisodes(allEpisodes);
-    searchInput.value = ""; // Optional: Clear search input
-    searchCount.textContent = `Showing ${allEpisodes.length} / ${allEpisodes.length} episodes`;
-  } else {
-    const selectedEpisode = allEpisodes.find(
-      (ep) => ep.id.toString() === selectedId
-    );
-    displayEpisodes([selectedEpisode]);
-    searchInput.value = ""; // Clear search when using selector
-    searchCount.textContent = `Showing 1 / ${allEpisodes.length} episodes`;
+  // Preselect default
+  if (selectedShowId) {
+    showSelect.value = String(selectedShowId);
+  } else if (shows[0]) {
+    showSelect.value = String(shows[0].id);
   }
-});
-
+}
 window.onload = setup;
