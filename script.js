@@ -235,4 +235,14 @@ function updateSearchCount(showing, total) {
 function formatEpisodeCode(season, number) {
   return `S${String(season).padStart(2, "0")}E${String(number).padStart(2, "0")}`;
 }
+// ===== Messages =====
+function showLoadingMessage(text = "Loading…") {
+  rootElem.innerHTML = `<p>${text}</p>`;
+}
+function showErrorMessage(msg) {
+  rootElem.innerHTML = `<p style="color:red;">${msg}</p>`;
+}
+function hideMessage() {
+  rootElem.innerHTML = "";
+}
 window.onload = setup;
