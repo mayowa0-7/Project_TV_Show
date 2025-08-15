@@ -121,6 +121,18 @@ function fetchEpisodesOnce(showId) {
   return p;
 }
 
+async function loadEpisodesForShow(showId) {
+  const episodes = await fetchEpisodesOnce(showId);
+  allEpisodes = episodes;
+  hideMessage();
+  populateEpisodeSelect(allEpisodes);
+  // Apply current search term on first load of this show
+  const term = searchInput.value.toLowerCase();
+  const filtered = filterEpisodes(allEpisodes, term);
+  displayEpisodes(filtered);
+  updateSearchCount(filtered.length, allEpisodes.length);
+}
+
   function makePageForEpisodes(episodeList) {
   displayEpisodes(episodeList);
 }
