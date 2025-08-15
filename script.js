@@ -7,7 +7,13 @@ const showSelect    = document.getElementById("show-select");
 const episodeSelect = document.getElementById("episode-select");
 const searchInput   = document.getElementById("search-input");
 const searchCount   = document.getElementById("search-count");
+//caches for shows and episodes
+let showsListPromise = null;                     // Promise for /shows
+const episodesCache = new Map();                 // showId -> episodes array
+const inFlightEpisodeFetch = new Map();          // showId -> Promise
 
+// ===== Setup =====
+window.onload = setup;
 function setup() {
   allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
