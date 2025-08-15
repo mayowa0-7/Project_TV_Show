@@ -85,6 +85,17 @@ searchInput.addEventListener("input", () => {
     }
   });
 }
+// ===== Fetch Helpers (single-fetch per URL) =====
+function fetchShowsOnce() {
+  if (showsListPromise) return showsListPromise;
+  showsListPromise = fetch("https://api.tvmaze.com/shows")
+    .then((res) => {
+      if (!res.ok) throw new Error(`Shows HTTP ${res.status}`);
+      return res.json();
+    });
+  return showsListPromise;
+}
+
   function makePageForEpisodes(episodeList) {
   displayEpisodes(episodeList);
 }
