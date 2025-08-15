@@ -228,5 +228,11 @@ function filterEpisodes(episodes, term) {
     (ep.summary || "").toLowerCase().includes(term)
   );
 }
+function updateSearchCount(showing, total) {
+  searchCount.textContent = `Showing ${showing} / ${total} episodes`;
+}
 
+function formatEpisodeCode(season, number) {
+  return `S${String(season).padStart(2, "0")}E${String(number).padStart(2, "0")}`;
+}
 window.onload = setup;
