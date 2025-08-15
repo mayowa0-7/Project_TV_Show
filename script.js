@@ -38,6 +38,27 @@ function setup() {
       console.error(err);
     });
 
+      // Wire up controls
+  showSelect.addEventListener("change", async () => {
+    const newId = parseInt(showSelect.value, 10);
+    selectedShowId = newId;
+
+    // Keep whatever the user typed in search and re-apply it to the new show's episodes
+    const term = searchInput.value.toLowerCase();
+
+    showLoadingMessage("Loading episodes…");
+    try {
+      await loadEpisodesForShow(newId);
+      const filtered = filterEpisodes(allEpisodes, term);
+      displayEpisodes(filtered);
+      updateSearchCount(filtered.length, allEpisodes.length);
+    } catch (err) {
+      showErrorMessage("Failed to load episodes for this show.");
+      console.error(err);
+    }
+  });
+
+  
 function makePageForEpisodes(episodeList) {
   displayEpisodes(episodeList);
 }
