@@ -58,8 +58,34 @@ function setup() {
     }
   });
 
-  
-function makePageForEpisodes(episodeList) {
+searchInput.addEventListener("input", () => {
+    const term = searchInput.value.toLowerCase();
+    const filtered = filterEpisodes(allEpisodes, term);
+    displayEpisodes(filtered);
+    updateSearchCount(filtered.length, allEpisodes.length);
+
+    // Reset episode select to "all" when searching
+    if (episodeSelect) episodeSelect.value = "all";
+  });
+
+  episodeSelect.addEventListener("change", () => {
+    const selectedId = episodeSelect.value;
+
+    // Respect any current search term
+    const term = searchInput.value.toLowerCase();
+    const base = filterEpisodes(allEpisodes, term);
+
+    if (selectedId === "all") {
+      displayEpisodes(base);
+      updateSearchCount(base.length, allEpisodes.length);
+    } else {
+      const selectedEpisode = base.find((ep) => ep.id.toString() === selectedId);
+      displayEpisodes(selectedEpisode ? [selectedEpisode] : []);
+      updateSearchCount(selectedEpisode ? 1 : 0, allEpisodes.length);
+    }
+  });
+}
+  function makePageForEpisodes(episodeList) {
   displayEpisodes(episodeList);
 }
  function displayEpisodes(episodes) {
