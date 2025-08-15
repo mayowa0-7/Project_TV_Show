@@ -220,4 +220,13 @@ function populateShowSelect(shows) {
     showSelect.value = String(shows[0].id);
   }
 }
+// ===== Utils =====
+function filterEpisodes(episodes, term) {
+  if (!term) return episodes;
+  return episodes.filter((ep) =>
+    (ep.name || "").toLowerCase().includes(term) ||
+    (ep.summary || "").toLowerCase().includes(term)
+  );
+}
+
 window.onload = setup;
