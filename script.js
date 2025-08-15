@@ -164,6 +164,7 @@ async function loadEpisodesForShow(showId) {
 
     rootElem.appendChild(episodeCard);
   });
+
 }
 function populateEpisodeSelect(episodes) {
   episodeSelect.innerHTML = '<option value="all">Show all episodes</option>';
@@ -206,6 +207,7 @@ function updateSearchCount(showing, total) {
   searchCount.textContent = `Showing ${showing} / ${total} episodes`;
 }
 
+
 function formatEpisodeCode(season, number) {
   return `S${String(season).padStart(2, "0")}E${String(number).padStart(2, "0")}`;
 }
@@ -219,3 +221,4 @@ function showErrorMessage(msg) {
 function hideMessage() {
   rootElem.innerHTML = "";
 }
+

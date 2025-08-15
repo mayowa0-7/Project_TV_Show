@@ -1,5 +1,5 @@
 body {
-  background-color: #1d597c; /* lilac */
+  background-color: #7b7780; /* lilac */
   margin: 0;
   font-family: Arial, sans-serif;
 }
@@ -11,6 +11,7 @@ body {
   padding: 20px;
   max-width: 1200px;
   margin: auto;
+  color: #111;
 }
 
 .episode-grid {
@@ -24,7 +25,7 @@ body {
 .episode-card {
   background: #fff;
   border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(71, 1, 71, 0.08);
+  box-shadow: 0 2px 12px rgba(80, 0, 80, 0.08);
   padding: 24px 16px 16px 16px;
   display: flex;
   flex-direction: column;
@@ -49,6 +50,7 @@ body {
   object-fit: cover;
   border-radius: 10px;
   border: 2px solid #874db8;
+
   background: #f5f0fa;
   margin-bottom: 12px;
   box-shadow: 0 1px 6px rgba(80, 0, 80, 0.07);
