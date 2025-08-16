@@ -200,7 +200,21 @@ function displayEpisodes(episodes) {
     });
     rootElem.appendChild(showCard);
   }
+  function switchToEpisodesView() {
+    showSelect.style.display = "inline-block";
+    episodeSelect.style.display = "inline-block";
+    searchInput.style.display = "inline-block";
+    searchCount.style.display = "block";
+  }
 
+  function switchToShowsListing() {
+    showSelect.style.display = "none";
+    episodeSelect.style.display = "none";
+    searchInput.style.display = "none";
+    searchCount.style.display = "none";
+    displayshows(allShows);
+    onShowsPage = true;
+  }
   if (episode.image?.medium) {
     const img = document.createElement("img");
     img.src = episode.image.medium;
