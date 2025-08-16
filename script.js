@@ -65,7 +65,15 @@ searchInput.addEventListener("input", () => {
   // Reset episode select to "all" when searching
   if (episodeSelect) episodeSelect.value = "all";
 });
-
+document.getElementById("show-search").addEventListener("input", () => {
+  const term = document.getElementById("show-search").value.toLowerCase();
+  const filtered = allShows.filter(show =>
+    show.name.toLowerCase().includes(term) ||
+    show.genres.join(" ").toLowerCase().includes(term) ||
+    show.summary.toLowerCase().includes(term)
+  );
+  displayshows(filtered);
+});
 episodeSelect.addEventListener("change", () => {
   const selectedId = episodeSelect.value;
   const term = searchInput.value.toLowerCase();
