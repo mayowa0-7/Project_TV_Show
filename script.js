@@ -206,7 +206,7 @@ function displayEpisodes(episodes) {
     searchInput.style.display = "inline-block";
     searchCount.style.display = "block";
   }
-
+}
   function switchToShowsListing() {
     showSelect.style.display = "none";
     episodeSelect.style.display = "none";
