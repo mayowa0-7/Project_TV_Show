@@ -164,7 +164,7 @@ function displayEpisodes(episodes) {
     }
     rootElem.appendChild(episodeCard);
   });
-
+}
 
   function displayshows(shows) {
     rootElem.innerHTML = "";
@@ -206,7 +206,6 @@ function displayEpisodes(episodes) {
     searchInput.style.display = "inline-block";
     searchCount.style.display = "block";
   }
-
   function switchToShowsListing() {
     showSelect.style.display = "none";
     episodeSelect.style.display = "none";
@@ -231,10 +230,9 @@ function displayEpisodes(episodes) {
     link.textContent = "View on TVMaze";
     link.target = "_blank";
     episodeCard.appendChild(link);
-  }
-
+  
   rootElem.appendChild(episodeCard);
-});
+}
 function populateEpisodeSelect(episodes) {
   episodeSelect.innerHTML = '<option value="all">Show all episodes</option>';
   episodes.forEach((episode) => {
