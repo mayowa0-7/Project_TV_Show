@@ -4,43 +4,63 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TV Show Project | MAYOWA (Mayowa)</title>
-  <link href="style.css" rel="stylesheet" />
+  <title>TV Show Project | MAYOWA</title>
+  <link href="style.css?v=1.0.0" rel="stylesheet" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 </head>
 
-
 <body>
-  <header>
-    <h1>TV Show Project</h1>
-    <p>By: Mayour</p>
-    <input type="text" id="search-input" placeholder="Search episodes...">
-<p id="search-count"></p>
-<select id="episode-select">
-  <option value="all">Show all episodes</option>
-</select>
-<select id="show-select">
-  <option value="" disabled selected>Loading shows…</option>
-</select>
-  </header>
-  <main>
-  <div id="shows-listing" style="display: grid;"></div>
-  <button id="back-to-shows">← Back to Shows</button>
-  <div id="episodes-listing" style="display: grid;"></div>
-  <div id="message-box" class="hidden">
-    <p id="message-text"></p>
-    <button id="close-message">Close</button>
-    <button id="back-to-shows">← Back to Shows</button>
 
+  <main>
+    <div id="top-bar">
+      <button id="back-to-shows" style="display: none;" aria-label="Go back to shows list">← Back to Shows</button>
+
+      <div id="controls-container">
+        <label for="show-search">Search shows:</label>
+        <input type="text" id="show-search" placeholder="Search shows..." />
+        <p id="show-search-count" aria-live="polite"></p>
+
+        <div id="episode-controls" style="display: none;">
+          <label for="search-input">Search episodes:</label>
+          <input type="text" id="search-input" placeholder="Search episodes..." aria-label="Search episodes" />
+
+          <label for="episode-select">Choose episode:</label>
+          <select id="episode-select" aria-label="Episode selector">
+            <option value="all">Show all episodes</option>
+          </select>
+
+          <label for="show-select">Choose show:</label>
+          <select id="show-select" aria-label="Show selector"></select>
+
+          <span id="search-count" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+
+    <div id="content-container">
+      <div id="root" role="list" aria-label="List of TV shows"></div>
+      <div id="shows-listing" role="list" aria-label="List of TV shows"></div>
+    </div>
   </main>
+
+
+
+  <div id="spinner" class="spinner hidden" role="status" aria-live="polite">
+    <span class="visually-hidden">Loading content...</span>
+    <div class="loader" aria-hidden="true"></div>
+  </div>
+
   <footer>
-    <p>Episode data from 
-  <a href="https://www.tvmaze.com/api" target="_blank" rel="noopener noreferrer">
-    TVMaze.com</a>
-  </p>
-    </footer>
-    <!-- Loads YOUR javascript code -->
-    <script src="script.js"></script>
+    <p>
+      Episode data from
+      <a href="https://www.tvmaze.com/api" target="_blank" rel="noopener noreferrer">
+        TVMaze.com
+      </a>
+    </p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script src="script.js?v=1.0.0" defer></script>
 </body>
 
 </html>
