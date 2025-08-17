@@ -151,7 +151,10 @@ function displayAllShows() {
 }
 
 function displayshows(shows) {
-  rootElem.innerHTML = ""; // Clear previous content
+  if (rootElem) {
+    rootElem.className = "grid-layout"; // Ensure grid layout is active
+    rootElem.innerHTML = ""; // Clear previous content
+  }
 
   shows.forEach((show) => {
     const card = document.createElement("article");
