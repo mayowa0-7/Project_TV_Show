@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,48 +7,49 @@
   <link href="style.css?v=1.0.0" rel="stylesheet" />
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 </head>
-
 <body>
 
   <main>
     <div id="top-bar">
       <button id="back-to-shows" style="display: none;" aria-label="Go back to shows list">← Back to Shows</button>
 
-      <div id="controls-container">
+      <!-- ✅ Show Controls (visible only on shows page) -->
+      <div id="show-controls"style="display: block;">
+        <label for="show-select">Select a show:</label>
+        <select id="show-select" aria-label="Show selector"></select>
+
         <label for="show-search">Search shows:</label>
         <input type="text" id="show-search" placeholder="Search shows..." />
+       <span id="search-count"></span>
         <p id="show-search-count" aria-live="polite"></p>
+      </div>
 
-        <div id="episode-controls" style="display: none;">
-          <label for="search-input">Search episodes:</label>
-          <input type="text" id="search-input" placeholder="Search episodes..." aria-label="Search episodes" />
+      <!-- ✅ Episode Controls (visible only on episodes page) -->
+      <div id="episode-controls" style="display: none;">
+        <label for="episode-select">Choose episode:</label>
+        <select id="episode-select" aria-label="Episode selector">
+          <option value="all">Show all episodes</option>
+        </select>
 
-          <label for="episode-select">Choose episode:</label>
-          <select id="episode-select" aria-label="Episode selector">
-            <option value="all">Show all episodes</option>
-          </select>
-
-          <label for="show-select">Choose show:</label>
-          <select id="show-select" aria-label="Show selector"></select>
-
-          <span id="search-count" aria-live="polite"></span>
-        </div>
+        <label for="episode-search-box">Search episodes:</label>
+        <input type="text" id="episode-search-box" placeholder="Search episodes..." />
+        <p id="episode-search-count" aria-live="polite"></p>
       </div>
     </div>
-
+<div id="shows-listing" style="display: none;" aria-hidden="true"></div>
+    <!-- ✅ Main Content Area -->
     <div id="content-container">
-      <div id="root" role="list" aria-label="List of TV shows"></div>
-      <div id="shows-listing" role="list" aria-label="List of TV shows"></div>
+      <div id="root" role="list" aria-label="List of TV shows or episodes"></div>
     </div>
   </main>
 
-
-
+  <!-- ✅ Loading Spinner -->
   <div id="spinner" class="spinner hidden" role="status" aria-live="polite">
     <span class="visually-hidden">Loading content...</span>
     <div class="loader" aria-hidden="true"></div>
   </div>
 
+  <!-- ✅ Footer -->
   <footer>
     <p>
       Episode data from
@@ -59,8 +59,7 @@
     </p>
   </footer>
 
-  <!-- JavaScript -->
+  <!-- ✅ JavaScript -->
   <script src="script.js?v=1.0.0" defer></script>
 </body>
-
 </html>
