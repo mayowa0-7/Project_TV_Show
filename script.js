@@ -15,8 +15,8 @@ const showsListing = document.getElementById("shows-listing");
 const backToShowsBtn = document.getElementById("back-to-shows");
 const showSearchCount = document.getElementById("show-search-count");
 const episodeSearchCount = document.getElementById("episode-search-count");
-const episodeSearchBox = document.getElementById("search-episodes");
-
+const searchCount = document.getElementById("search-count");
+const episodeSearchBox = document.getElementById("episode-search-box");
 //caches for shows and episodes
 let showsListPromise = null;                     // Promise for /shows
 const episodesCache = new Map();                 // showId -> episodes array
@@ -88,45 +88,36 @@ showSelect.addEventListener("change", async () => {
   const selectedId = showSelect.value;
   if (selectedId === "") {
     displayshows(allShows);
-    if (showSearchCount) showSearchCount.textContent = "";
+    updateSearchCount(0, 0, "show"); // Clear count
     return;
   }
-
   const selected = allShows.find((s) => String(s.id) === selectedId);
-  if (selected) displayshows([selected]);
-  if (showSearchCount) showSearchCount.textContent = "1 show found";
+ if (selected) {
+  displayshows([selected]);
+  updateSearchCount(1, allShows.length, "show", selected.name.toLowerCase());
+}});
 
-  ///
-});
 if (episodeSearchBox) {
   episodeSearchBox.addEventListener("input", debounce(() => {
     const term = episodeSearchBox.value.toLowerCase();
-    const filtered = allEpisodes.filter((ep) =>
-      (ep.name || "").toLowerCase().includes(term) ||
-      (ep.summary || "").toLowerCase().includes(term)
-    );
+    const filtered = filterEpisodes(allEpisodes, term);
     displayEpisodes(filtered);
-    updateSearchCount(filtered.length, allEpisodes.length);
+    updateSearchCount(filtered.length, allEpisodes.length, "episode", term);
   }, 300));
 }
 
 episodeSelect.addEventListener("change", () => {
   const selectedId = episodeSelect.value;
-
-  // Respect any current search term
-  const term = searchBox.value.toLowerCase();
+  const term = episodeSearchBox?.value?.toLowerCase() || "";
   const base = filterEpisodes(allEpisodes, term);
 
   if (selectedId === "all") {
-    displayEpisodes(base);
-    updateSearchCount(base.length, allEpisodes.length);
+    displayEpisodes(base); // Count handled inside
   } else {
     const selectedEpisode = base.find((ep) => ep.id.toString() === selectedId);
     displayEpisodes(selectedEpisode ? [selectedEpisode] : []);
-    updateSearchCount(selectedEpisode ? 1 : 0, allEpisodes.length);
   }
 });
-
 // ===== Fetch Helpers (single-fetch per URL) =====
 function fetchShowsOnce() {
   if (showsListPromise) return showsListPromise;
@@ -163,20 +154,27 @@ function fetchEpisodesOnce(showId) {
   return p;
 }
 
-async function loadEpisodesForShow(showId) {
-  const episodes = await fetchEpisodesOnce(showId);
-  allEpisodes = episodes;
-  hideMessage();
-  toggleEpisodeControls(true);
-  populateEpisodeSelect(allEpisodes);
-  backToShowsBtn.style.display = "inline";
+function loadEpisodesForShow(showId) {
+  fetchEpisodesOnce(showId).then((episodes) => {
+    allEpisodes = episodes;
+    hideMessage();
+    toggleEpisodeControls(true);
 
-  // Apply current search term on first load of this show
-  const term = searchBox.value.toLowerCase();
-  const filtered = filterEpisodes(allEpisodes, term);
-  displayEpisodes(filtered); // This now handles the count update
+    // ✅ Explicitly show controls
+    if (episodeSearchBox) episodeSearchBox.style.display = "block";
+    if (episodeSelect) episodeSelect.style.display = "block";
+
+    populateEpisodeSelect(allEpisodes);
+    backToShowsBtn.style.display = "inline";
+
+    const term = episodeSearchBox?.value?.toLowerCase() || "";
+    const filtered = filterEpisodes(allEpisodes, term);
+    displayEpisodes(filtered);
+  }).catch((err) => {
+    console.error("Failed to load episodes:", err);
+    showMessage("Could not load episodes. Please try again.");
+  });
 }
-
 function displayEpisodes(episodes) {
   const root = document.getElementById("root");
   root.innerHTML = "";
@@ -185,7 +183,6 @@ function displayEpisodes(episodes) {
     const card = createEpisodeCard(episode);
     root.appendChild(card);
   });
-  updateSearchCount(episodes.length, allEpisodes.length);
 }
 
 function displayAllShows() {
@@ -254,13 +251,20 @@ function createShowCard(show) {
   card.append(title, img, summary, meta);
   return card;
 }
-function updateSearchCount(filteredCount, totalCount) {
-  const searchCount = document.getElementById("episode-search-count");
-  if (searchCount) {
-    searchCount.textContent = `Showing ${filteredCount} of ${totalCount} episodes`;
+function updateSearchCount(showing, total, type, term = "") {
+  
+  const showCountElem = document.getElementById("show-search-count");
+  const episodeCountElem = document.getElementById("episode-search-count");
+
+  const label = term ? `"${term}"` : "";
+  const message = `Showing ${showing} / ${total} ${type}s ${label ? `matching ${label}` : ""}`;
+
+  if (type === "show" && showCountElem) {
+    showCountElem.textContent = message;
+  } else if (type === "episode" && episodeCountElem) {
+    episodeCountElem.textContent = message;
   }
 }
-
 function showShowsView() {
   currentView = "shows";
   onShowsPage = true;
@@ -285,8 +289,6 @@ function showShowsView() {
     episodeSearchBox.value = "";
     episodeSearchBox.style.display = "none"; // ✅ Hide
   }
-
-  if (episodeSearchCount) episodeSearchCount.textContent = ""; // ✅ Use consistent ID
 
   toggleEpisodeControls(false);
   populateShowSelect(allShows);
@@ -318,37 +320,17 @@ function setupEventListeners() {
   }
   if (searchBox) {
     searchBox.addEventListener("input", debounce(() => {
-      if (!onShowsPage) return; // Prevent search on episodes page
-
       const term = searchBox.value.toLowerCase();
       const filtered = allShows.filter((show) =>
-        (show.name || "").toLowerCase().includes(term) ||
-        (show.summary || "").toLowerCase().includes(term) ||
-        show.genres.some((g) => g.toLowerCase().includes(term))
+        (show.name || "").toLowerCase().includes(term)
       );
       displayshows(filtered);
-      if (showSearchCount) {
-        showSearchCount.textContent = `${filtered.length} show${filtered.length !== 1 ? "s" : ""} found`;
-      }
+      updateSearchCount(filtered.length, allShows.length, "show");
     }, 300));
   }
 }
- window.addEventListener("DOMContentLoaded", () => {
-  const episodeSearchBox = document.getElementById("episode-search-box");
-
-  if (episodeSearchBox) {
-    episodeSearchBox.addEventListener("input", debounce(() => {
-      const term = episodeSearchBox.value.toLowerCase();
-
-      const filtered = allEpisodes.filter((ep) =>
-        (ep.name || "").toLowerCase().includes(term) ||
-        (ep.summary || "").toLowerCase().includes(term)
-      );
-
-      displayEpisodes(filtered);
-      updateSearchCount(filtered.length, allEpisodes.length);
-    }, 300));
-  }
+window.addEventListener("DOMContentLoaded", () => {
+  setupEventListeners(); // include episodeSearchBox logic here
 });
 function createEpisodeCard(episode) {
   const card = document.createElement("article");
@@ -421,10 +403,6 @@ function filterEpisodes(episodes, term) {
     (ep.summary || "").toLowerCase().includes(term)
   );
 }
-function updateSearchCount(showing, total) {
-  searchCount.textContent = `Showing ${showing} / ${total} episodes`;
-}
-
 function toggleEpisodeControls(show) {
   const controls = document.getElementById("episode-controls");
   if (controls) {

@@ -109,6 +109,10 @@ input:focus {
   text-align: left;
 
 }
+.search-count {
+  margin: 0.5em 0;
+  font-weight: bold;
+}
 
 .show-card:hover {
   transform: scale(1.02);
