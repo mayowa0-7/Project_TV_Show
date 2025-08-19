@@ -75,6 +75,7 @@ function setup() {
       hideMessage();
       populateShowSelect(allShows);
       displayshows(shows);
+      updateSearchCount(shows.length, allShows.length, "show");
       onShowsPage = true;
       setupEventListeners();
     })
@@ -170,6 +171,7 @@ function loadEpisodesForShow(showId) {
     const term = episodeSearchBox?.value?.toLowerCase() || "";
     const filtered = filterEpisodes(allEpisodes, term);
     displayEpisodes(filtered);
+    updateSearchCount(filtered.length, allEpisodes.length, "episode");
   }).catch((err) => {
     console.error("Failed to load episodes:", err);
     showMessage("Could not load episodes. Please try again.");
